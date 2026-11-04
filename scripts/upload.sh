@@ -2,6 +2,7 @@
 # 发布 astra-serve-host 二进制到本仓库的 GitHub Release。
 # 用法：scripts/upload.sh <版本号>   （版本号不带 v 前缀，如 0.2.0）
 # 前置：gh 已认证、有 astra-praxis/astra-bot 权限；本机 cargo 可构建 astra-serve。
+# 网络走 HTTPS（gh credential helper），不走 SSH——公司网络 SSH 到 GitHub 常被掐。
 set -eu
 
 REPO="astra-praxis/astra-bot"
@@ -29,10 +30,10 @@ else
   SHA="$(sha256sum "$ASSET" | awk '{print $1}')"
 fi
 
-echo "==> 更新 latest.json"
-git clone --depth 1 "git@github.com:${REPO}.git" repo
+echo "==> 更新 latest.json（HTTPS clone）"
+git clone --depth 1 "https://github.com/${REPO}.git" repo
 python3 - "$VERSION" "$TAG" "$HOST_TRIPLE" "$SHA" "$ASSET" <<'PYEOF'
-import json, sys, urllib.request
+import json, sys
 version, tag, triple, sha, asset = sys.argv[1:6]
 p = "repo/latest.json"
 d = json.load(open(p))
@@ -43,19 +44,18 @@ d["files"][triple] = {
     "sha256": sha,
     "url": f"https://github.com/astra-praxis/astra-bot/releases/download/{tag}/{asset}",
 }
-# 其它平台条目沿用上一版本的记录（构建机只产本平台产物时）
 json.dump(d, open(p, "w"), indent=2, ensure_ascii=False)
-print("latest.json:", d["files"].keys() and list(d["files"].keys()))
+print("平台条目:", ", ".join(d["files"].keys()))
 PYEOF
 
 echo "==> 创建 Release 并上传"
 cd repo
-git config user.name "$(git config user.name || echo alanpaper)"
+gh auth setup-git 2>/dev/null || true
 git add latest.json
 git commit -m "release: serve-v${VERSION} (${HOST_TRIPLE})" || echo "latest.json 无变化"
 git push origin HEAD:main
 gh release create "$TAG" --repo "$REPO" --title "astra-serve-host v${VERSION}" \
   --notes "下载对应平台文件后按 README 安装。sha256 见 latest.json。" \
-  || gh release upload "$TAG" --repo "$REPO" --clobber "../$ASSET" || true
-gh release upload "$TAG" --repo "$REPO" --clobber "../$ASSET"
+  "../$ASSET" \
+  || gh release upload "$TAG" --repo "$REPO" --clobber "../$ASSET"
 echo "==> 完成: $TAG"
