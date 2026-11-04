@@ -1,5 +1,12 @@
 {
-  "version": "0.0.0",
+  "version": "0.1.0",
   "notes": "占位清单；首次发布后由 scripts/upload.sh 覆盖",
-  "files": {}
+  "files": {
+    "aarch64-apple-darwin": {
+      "asset": "astra-serve-host-aarch64-apple-darwin",
+      "sha256": "87de568ee627780d7fc2ec5809f5405679dbc5b7dc951fbee705c8240b8e2f51",
+      "url": "https://github.com/astra-praxis/astra-bot/releases/download/serve-v0.1.0/astra-serve-host-aarch64-apple-darwin"
+    }
+  },
+  "tag": "serve-v0.1.0"
 }
