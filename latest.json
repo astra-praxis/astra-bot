@@ -6,6 +6,11 @@
       "asset": "astra-serve-host-aarch64-apple-darwin",
       "sha256": "87de568ee627780d7fc2ec5809f5405679dbc5b7dc951fbee705c8240b8e2f51",
       "url": "https://github.com/astra-praxis/astra-bot/releases/download/serve-v0.1.0/astra-serve-host-aarch64-apple-darwin"
+    },
+    "x86_64-pc-windows-msvc": {
+      "asset": "astra-serve-host-x86_64-pc-windows-msvc.exe",
+      "sha256": "2eb598aaa527b5ecd0e192808f6e32b5791ee29704c8d589042d7fa97c7b5752",
+      "url": "https://github.com/astra-praxis/astra-bot/releases/download/serve-v0.1.0/astra-serve-host-x86_64-pc-windows-msvc.exe"
     }
   },
   "tag": "serve-v0.1.0"
