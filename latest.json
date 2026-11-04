@@ -9,7 +9,7 @@
     },
     "x86_64-pc-windows-msvc": {
       "asset": "astra-serve-host-x86_64-pc-windows-msvc.exe",
-      "sha256": "2eb598aaa527b5ecd0e192808f6e32b5791ee29704c8d589042d7fa97c7b5752",
+      "sha256": "781e1a069228eb57dd9ed6075baf7215f0e6e00bb00f30abd0fbfe03d85317ff",
       "url": "https://github.com/astra-praxis/astra-bot/releases/download/serve-v0.1.0/astra-serve-host-x86_64-pc-windows-msvc.exe"
     }
   },
